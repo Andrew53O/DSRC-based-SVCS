@@ -15,9 +15,17 @@ def sign_message(private_key, message):
     key = RSA.import_key(private_key)
     h = SHA256.new(message.encode('utf-8'))
     signature = pkcs1_15.new(key).sign(h)
+    #print(f"Signature: {signature}")
+    # how to print signature size
+    print(f"Signature Size: {len(signature)} bytes")
+    #print(f"Message Size: {len(message)} bytes")
+    print(f"Private Key Size: {len(private_key)} bytes")
     return signature
 
 def verify_signature(public_key, message, signature):
+    print(f"Signature Size: {len(signature)} bytes")
+    print(f"Message Size: {len(message)} bytes")
+    print(f"Public Key Size: {len(public_key)} bytes")
     key = RSA.import_key(public_key)
     h = SHA256.new(message.encode('utf-8'))
     try:
@@ -75,7 +83,7 @@ class Simulation:
             while vehicle_b == vehicle_a:
                 vehicle_b = random.randint(0, self.num_vehicles - 1)
 
-            message = f"Message from vehicle {vehicle_a} to vehicle {vehicle_b}"
+            message = f"Hello"
             #print(f"Sending message: {message}")
             # Send message and record performance metrics
             success, sign_time, verify_time = self.send_message(vehicle_a, vehicle_b, message)
