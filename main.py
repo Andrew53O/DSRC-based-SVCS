@@ -7,31 +7,45 @@ from Crypto.Hash import SHA256
 # Generate RSA key pair
 def generate_rsa_key_pair():
     key = RSA.generate(2048)
+    print(f"RSA Key Size: {key.size_in_bits()} bits")
     private_key = key.export_key()
+    print(f"Private Key Size: {len(private_key)} bytes")
     public_key = key.publickey().export_key()
+    print(f"Public Key Size: {len(public_key)} bytes")
     return private_key, public_key
 
 def sign_message(private_key, message):
+    # Import the private key
     key = RSA.import_key(private_key)
+    # Create a SHA-256 hash of the message
     h = SHA256.new(message.encode('utf-8'))
+    # Sign the hash with the private key
     signature = pkcs1_15.new(key).sign(h)
-    #print(f"Signature: {signature}")
-    # how to print signature size
+    # Print the size of the signature in bytes
     print(f"Signature Size: {len(signature)} bytes")
-    #print(f"Message Size: {len(message)} bytes")
+    # Print the size of the private key in bytes
     print(f"Private Key Size: {len(private_key)} bytes")
+    # Return the signature
     return signature
 
 def verify_signature(public_key, message, signature):
+    # Print the size of the signature in bytes
     print(f"Signature Size: {len(signature)} bytes")
+    # Print the size of the message in bytes
     print(f"Message Size: {len(message)} bytes")
+    # Print the size of the public key in bytes
     print(f"Public Key Size: {len(public_key)} bytes")
+    # Import the public key
     key = RSA.import_key(public_key)
+    # Create a SHA-256 hash of the message
     h = SHA256.new(message.encode('utf-8'))
     try:
+        # Verify the signature with the public key
         pkcs1_15.new(key).verify(h, signature)
+        # If verification is successful, return True
         return True
     except (ValueError, TypeError):
+        # If verification fails, return False
         return False
 
 class Simulation:

@@ -1,0 +1,35 @@
+RSA encryption + MAC authentication
+
+global public key = RSA.publickey()
+
+Sender 
+    MACkey = H(global public key) // 128-bit
+    Tag = MAC(msg, MACkey)
+
+    sender.publickey = RSA.publickey()
+    sender.privatekey = RSA.privatekey()
+
+    Payload = ENC(msg||tag, receiver.publickey()) // being concantinate
+
+** Payload to receiver 
+
+Receiver 
+    payload_receiver = DEC(payload, receiver.privatekey())
+
+    // we know that payload_receiver = msg + tag
+    // we can split the payload_receiver into receiver_msg and receiver_tag
+
+    MACkey = H(global public key)
+    Tag = MAC(receiver_msg, MACkey)
+
+    if Tag == MAC(msg, MACkey)
+        return true
+    else
+        // discard the message
+
+Note: I use a global public key to make sure that it will be the across the vehicle, we don't to worry about the other peole knowing the MACkey, cause the mesage is being encrypt
+
+
+
+## mac.pay 
+Still have bug
